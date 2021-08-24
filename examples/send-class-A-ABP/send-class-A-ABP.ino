@@ -9,36 +9,44 @@
  * member) at the local, and you've found our code helpful, 
  * please buy us a round!
  * Distributed as-is; no warranty is given.
+ * 
+ * Modified by soldered.com
  */
+
 #include <lorawan.h>
 
-//ABP Credentials 
+// ABP Credentials - find yours at https://www.thethingsnetwork.org/ console
+// Add your device manually with LoRaWAN 1.0, your area frequency and click on advanced to select class and activation type
 const char *devAddr = "00000000";
 const char *nwkSKey = "00000000000000000000000000000000";
 const char *appSKey = "00000000000000000000000000000000";
 
-const unsigned long interval = 10000;    // 10 s interval to send message
-unsigned long previousMillis = 0;  // will store last time message sent
-unsigned int counter = 0;     // message counter
+const unsigned long interval = 10000; // 10 s interval to send message
+unsigned long previousMillis = 0;     // will store last time message sent
+unsigned int counter = 0;             // message counter
 
 char myStr[50];
 char outStr[255];
 byte recvStatus = 0;
 
+// Soldered ESP32 LoRa pins
 const sRFM_pins RFM_pins = {
-  .CS = 20,
-  .RST = 9,
-  .DIO0 = 0,
-  .DIO1 = 1,
-  .DIO2 = 2,
-  .DIO5 = 15,
+    .CS = 5,
+    .RST = 4,
+    .DIO0 = 27,
+    .DIO1 = 32,
+    .DIO2 = 33,
+    .DIO5 = -1,
 };
 
-void setup() {
+void setup()
+{
   // Setup loraid access
   Serial.begin(9600);
-  while(!Serial);
-  if(!lora.init()){
+  while (!Serial)
+    ;
+  if (!lora.init())
+  {
     Serial.println("RFM95 not detected");
     delay(5000);
     return;
@@ -52,32 +60,35 @@ void setup() {
 
   // set channel to random
   lora.setChannel(MULTI);
-  
+
   // Put ABP Key and DevAddress here
   lora.setNwkSKey(nwkSKey);
   lora.setAppSKey(appSKey);
   lora.setDevAddr(devAddr);
 }
 
-void loop() {
+void loop()
+{
   // Check interval overflow
-  if(millis() - previousMillis > interval) {
-    previousMillis = millis(); 
+  if (millis() - previousMillis > interval)
+  {
+    previousMillis = millis();
 
-    sprintf(myStr, "Counter-%d", counter); 
+    sprintf(myStr, "Counter-%d", counter);
 
     Serial.print("Sending: ");
     Serial.println(myStr);
-    
+
     lora.sendUplink(myStr, strlen(myStr), 0, 1);
     counter++;
   }
 
   recvStatus = lora.readData(outStr);
-  if(recvStatus) {
+  if (recvStatus)
+  {
     Serial.println(outStr);
   }
-  
+
   // Check Lora RX
   lora.update();
 }
