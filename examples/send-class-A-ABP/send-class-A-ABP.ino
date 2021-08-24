@@ -17,6 +17,7 @@
 
 // ABP Credentials - find yours at https://www.thethingsnetwork.org/ console
 // Add your device manually with LoRaWAN 1.0, your area frequency and click on advanced to select class and activation type
+// For changing frequency find Config.h file in library source code
 const char *devAddr = "00000000";
 const char *nwkSKey = "00000000000000000000000000000000";
 const char *appSKey = "00000000000000000000000000000000";
