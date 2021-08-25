@@ -1,5 +1,7 @@
 ![LibraryBuild](https://github.com/BeelanMX/Beelan-LoRaWAN/workflows/LibraryBuild/badge.svg?branch=master)
 
+Forked for use with soldered.com boards, see more [here.](https://solde.red/lora)
+
 Arduino LoRaWAN library by Beelan
 ====================
 This repository contains the simple LoRaWAN library encapsulated to run in the generic platform, allowing using the SX1272, SX1276 transceivers and compatible modules (such as some HopeRF RFM9x modules).
